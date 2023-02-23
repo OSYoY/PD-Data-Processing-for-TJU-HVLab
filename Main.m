@@ -1,6 +1,8 @@
 %%%%%%%%%%Start%%%%%%%%%%
 clear;clc;
-delete("out.xlsx");
+if exist("out.xlsx","file")
+    delete("out.xlsx");
+end
 %%%%%%%%%%READ%%%%%%%%%%
 data = readmatrix("1.xlsx");
 data1 = [data(:,2),data(:,6),data(:,8),data(:,10),data(:,12),data(:,14),data(:,16),data(:,18),data(:,20),data(:,22),data(:,24),data(:,26),data(:,28),data(:,30),data(:,32),data(:,34),data(:,36),data(:,38),data(:,40),data(:,42),data(:,44),data(:,46),data(:,48),data(:,50),data(:,52),data(:,54),data(:,56),data(:,58),data(:,60),data(:,62),data(:,64),data(:,66),data(:,68),data(:,70),data(:,72),data(:,74),data(:,76),data(:,78),data(:,80),data(:,82),data(:,84),data(:,86),data(:,88),data(:,90),data(:,92),data(:,94),data(:,96),data(:,98),data(:,100),data(:,102),data(:,104),data(:,106),data(:,108),data(:,110),data(:,112),data(:,114),data(:,116),data(:,118),data(:,120),data(:,122),data(:,124),data(:,126),data(:,128),data(:,130)];
@@ -52,6 +54,7 @@ end
 %%%%%%%%%%特征Out%%%%%%%%%%
 Statistics = {  'Max_Amplitude',Maximum_PD;
                 'Count_PD',N_PD;
+                'Count_PD_per_second',N_PD/1.28;
                 'S_Positive',S_Positive;
                 'S_Negative',S_Negative;
                 'K_Positive',K_Positive;
