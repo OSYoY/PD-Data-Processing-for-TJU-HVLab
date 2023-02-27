@@ -4,6 +4,8 @@
 	MATLAB R2019b及更老版本选择“Main_for_MATLAB_2019_and_older.m”
 	MATLAB R2020a及更新版本选择“Main_for_MATLAB_2020_and_later.m” 
 	
+更新：“Main_for_PointDensity.m”适用于绘制热点图形式的PRPD谱图（配合OriginLab“点密度图”使用）
+
 输入文件
 	运行main.m后弹出资源管理器，选择输入文件
 
