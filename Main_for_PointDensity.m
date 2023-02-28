@@ -33,7 +33,7 @@ data1=circshift(data1,[8 0]);
 
 %%%%%%%%%%处理幅值、次数%%%%%%%%%%
 Maximum_PD = max(max(data1));
-N_PD = sum(data1(:)>10);
+N_PD = sum(data1(:)>9);
 
 %%%%%%%%%%处理相位%%%%%%%%%%
 Phase_Position_Positive = 0;
@@ -41,7 +41,7 @@ Phase_Position_Negative = 0;
 
 for x = 1:64
     for y = 1:64
-        if data1(x,y)>10
+        if data1(x,y)>9
             Phase_Position_Positive = [Phase_Position_Positive x];
         else
         end
@@ -51,7 +51,7 @@ Phase_Position_Positive(:,1) = [];
 
 for x = 65:124
     for y = 1:64
-        if data1(x,y)>10
+        if data1(x,y)>9
             Phase_Position_Negative = [Phase_Position_Negative x];
         else
         end
@@ -69,13 +69,13 @@ K_Negative = kurtosis(Phase_Position_Negative)-3;
 temp_write = [0 0];
 for i = 1:124
     for k = 1:64
-        if data1(i,k)>8
+        if data1(i,k)>9
         temp_write = [temp_write ; 360*i/124 data1(i,k)];
         else
         end
     end
 end
-temp_write(1,:)=[]
+temp_write(1,:)=[];
 writematrix(temp_write,file_out,'Sheet',1,'WriteMode','append');
 %%%%%%%%%%特征量Out%%%%%%%%%%
 Statistics = {  'Max_Amplitude',Maximum_PD;
@@ -87,3 +87,13 @@ Statistics = {  'Max_Amplitude',Maximum_PD;
     'K_Negative',K_Negative};
 
 writecell(Statistics,file_out,'Sheet',2);
+%%%%%%%%%%%放电次数随相位分布%%%%%%%%%%%
+temp_write_N = [0 0];
+for m = 1:30
+    temp_N = sum(data1(4*m,:)>9)+sum(data1(4*m-1,:)>9)+sum(data1(4*m-2,:)>9)+sum(data1(4*m-3,:)>9);
+    temp_write_N = [temp_write_N; (12*m-6) temp_N ];
+end
+temp_write_N(1,:)=[];
+writematrix(temp_write_N,file_out,'Sheet',3);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
