@@ -17,8 +17,7 @@ file_out(:,length(file)-3) = 'o';
 file_out(:,length(file)-4) = '_';
 
 for j =1:length(file)-5
-    file_out(:,j)=file(:,j);
-end
+    file_out(:,j)=file(:,j);end
 
 %%%%%%%%%%%清除重名文件%%%%%%%%%%%
 if exist(file_out,"file")
@@ -83,11 +82,35 @@ end
 
 %%%%%%%%%%特征量Out%%%%%%%%%%
 Statistics = {  'Max_Amplitude',Maximum_PD;
-                'Count_PD',N_PD;
-                'Count_PD_per_second',N_PD/1.28;
-                'S_Positive',S_Positive;
-                'S_Negative',S_Negative;
-                'K_Positive',K_Positive;
-                'K_Negative',K_Negative};
+    'Count_PD',N_PD;
+    'Count_PD_per_second',N_PD/1.28;
+    'S_Positive',S_Positive;
+    'S_Negative',S_Negative;
+    'K_Positive',K_Positive;
+    'K_Negative',K_Negative};
 
 writecell(Statistics,file_out,'Sheet',2);
+
+
+
+%%%%%%%%%%%放电次数随相位分布%%%%%%%%%%%
+temp_write_N = [0 0];
+for m = 1:30
+    temp_N = sum(data1(4*m,:)>9)+sum(data1(4*m-1,:)>9)+sum(data1(4*m-2,:)>9)+sum(data1(4*m-3,:)>9);
+    temp_write_N = [temp_write_N; (12*m-6) temp_N ];
+end
+temp_write_N(1,:)=[];
+writematrix('相位',file_out,'Sheet',3,'Range','A1');
+writematrix('放电次数',file_out,'Sheet',3,'Range','B1');
+writematrix(temp_write_N,file_out,'Sheet',3,'WriteMode','append');
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Strength_distribution=[0 0];
+for n = 1:Maximum_PD
+    Strength_distribution = [Strength_distribution; n length(find((data1(:)>=n)&(data1(:)<(n+100))))/100];
+end
+Strength_distribution(1,:)=[];
+writematrix('放电幅值',file_out,'Sheet',4,'Range','A1');
+writematrix('放电次数',file_out,'Sheet',4,'Range','B1');
+writematrix(Strength_distribution,file_out,'Sheet',4,'WriteMode','append');

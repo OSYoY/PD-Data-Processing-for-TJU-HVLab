@@ -70,13 +70,16 @@ temp_write = [0 0];
 for i = 1:124
     for k = 1:64
         if data1(i,k)>9
-        temp_write = [temp_write ; 360*i/124 data1(i,k)];
+            temp_write = [temp_write ; 360*i/124 data1(i,k)];
         else
         end
     end
 end
 temp_write(1,:)=[];
+writematrix('相位',file_out,'Sheet',1,'Range','A1');
+writematrix('放电幅值',file_out,'Sheet',1,'Range','B1');
 writematrix(temp_write,file_out,'Sheet',1,'WriteMode','append');
+
 %%%%%%%%%%特征量Out%%%%%%%%%%
 Statistics = {  'Max_Amplitude',Maximum_PD;
     'Count_PD',N_PD;
@@ -85,8 +88,9 @@ Statistics = {  'Max_Amplitude',Maximum_PD;
     'S_Negative',S_Negative;
     'K_Positive',K_Positive;
     'K_Negative',K_Negative};
+writematrix('局放特征量',file_out,'Sheet',2,'Range','A1');
+writecell(Statistics,file_out,'Sheet',2,'Range','A2:B8');
 
-writecell(Statistics,file_out,'Sheet',2);
 %%%%%%%%%%%放电次数随相位分布%%%%%%%%%%%
 temp_write_N = [0 0];
 for m = 1:30
@@ -94,6 +98,16 @@ for m = 1:30
     temp_write_N = [temp_write_N; (12*m-6) temp_N ];
 end
 temp_write_N(1,:)=[];
-writematrix(temp_write_N,file_out,'Sheet',3);
+writematrix('相位',file_out,'Sheet',3,'Range','A1');
+writematrix('放电次数',file_out,'Sheet',3,'Range','B1');
+writematrix(temp_write_N,file_out,'Sheet',3,'WriteMode','append');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Strength_distribution=[0 0];
+for n = 1:Maximum_PD
+    Strength_distribution = [Strength_distribution; n length(find((data1(:)>=n-50)&(data1(:)<(n+50))))/100];
+end
+Strength_distribution(1,:)=[];
+writematrix('放电幅值',file_out,'Sheet',4,'Range','A1');
+writematrix('放电次数',file_out,'Sheet',4,'Range','B1');
+writematrix(Strength_distribution,file_out,'Sheet',4,'WriteMode','append');
